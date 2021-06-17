@@ -66,6 +66,43 @@ export const numLabels = (modes: EdgeLabelMode[]): number => {
   return modes.filter(m => m !== EdgeLabelMode.RESPONSE_TIME_GROUP && m !== EdgeLabelMode.THROUGHPUT_GROUP).length;
 };
 
+export enum TrafficRate {
+  GRPC_GROUP = 'grpc',
+  GRPC_RECEIVED = 'grpcReceived', // response_messages
+  GRPC_REQUEST = 'grpcRequest',
+  GRPC_SENT = 'grpcSent', // request_messages
+  GRPC_TOTAL = 'grpcTotal', // sent_bytes + received_bytes
+  HTTP_GROUP = 'http',
+  HTTP_REQUEST = 'httpRequest',
+  TCP_GROUP = 'tcp',
+  TCP_RECEIVED = 'tcpReceived', // received_bytes
+  TCP_SENT = 'tcpSent', // sent_bytes
+  TCP_TOTAL = 'tcpTotal' // sent_bytes + received_bytes
+}
+
+export const isGrpcRate = (rate: TrafficRate): boolean => {
+  return (
+    rate === TrafficRate.GRPC_GROUP ||
+    rate === TrafficRate.GRPC_RECEIVED ||
+    rate === TrafficRate.GRPC_REQUEST ||
+    rate === TrafficRate.GRPC_SENT ||
+    rate === TrafficRate.GRPC_TOTAL
+  );
+};
+
+export const isHttpRate = (rate: TrafficRate): boolean => {
+  return rate === TrafficRate.HTTP_GROUP || rate === TrafficRate.HTTP_REQUEST;
+};
+
+export const isTcpRate = (rate: TrafficRate): boolean => {
+  return (
+    rate === TrafficRate.TCP_GROUP ||
+    rate === TrafficRate.TCP_RECEIVED ||
+    rate === TrafficRate.TCP_SENT ||
+    rate === TrafficRate.TCP_TOTAL
+  );
+};
+
 export enum GraphType {
   APP = 'app',
   SERVICE = 'service',

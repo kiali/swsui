@@ -42,9 +42,9 @@ type ReduxProps = {
 };
 
 type GraphSettingsProps = ReduxProps &
-  Omit<GraphToolbarState, 'findValue' | 'hideValue' | 'showLegend' | 'showFindHelp'>;
+  Omit<GraphToolbarState, 'findValue' | 'hideValue' | 'showLegend' | 'showFindHelp' | 'trafficRates'>;
 
-type GraphSettingsState = { edgeLabelThroughputChecked: boolean; isOpen: boolean };
+type GraphSettingsState = { isOpen: boolean };
 
 interface DisplayOptionType {
   id: string;
@@ -61,7 +61,6 @@ class GraphSettings extends React.PureComponent<GraphSettingsProps, GraphSetting
   constructor(props: GraphSettingsProps) {
     super(props);
     this.state = {
-      edgeLabelThroughputChecked: false,
       isOpen: false
     };
 
@@ -417,7 +416,7 @@ class GraphSettings extends React.PureComponent<GraphSettingsProps, GraphSetting
         className={containerStyle}
         maxHeight={{ type: PropertyType.VIEWPORT_HEIGHT_MINUS_TOP, margin: marginBottom }}
       >
-        <div id="graph-display-menu" className={menuStyle}>
+        <div id="graph-display-menu" className={menuStyle} style={{ width: '15em' }}>
           <div style={{ marginTop: '10px' }}>
             <span className={titleStyle} style={{ position: 'relative', bottom: '3px', paddingRight: 0 }}>
               Show Edge Labels

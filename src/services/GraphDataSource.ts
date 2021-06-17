@@ -9,7 +9,8 @@ import {
   NodeParamsType,
   NodeType,
   UNKNOWN,
-  DecoratedGraphNodeWrapper
+  DecoratedGraphNodeWrapper,
+  TrafficRate
 } from '../types/Graph';
 import Namespace from '../types/Namespace';
 import * as AlertUtils from '../utils/AlertUtils';
@@ -75,6 +76,7 @@ export interface FetchParams {
   showIdleNodes: boolean;
   showOperationNodes: boolean;
   showSecurity: boolean;
+  trafficRates: TrafficRate[];
 }
 
 type OnEvents = {
@@ -130,7 +132,8 @@ export default class GraphDataSource {
       showIdleEdges: false,
       showIdleNodes: false,
       showOperationNodes: false,
-      showSecurity: false
+      showSecurity: false,
+      trafficRates: []
     };
     this._isError = this._isLoading = false;
   }
@@ -225,6 +228,43 @@ export default class GraphDataSource {
       }
     });
     restParams.appenders = appenders;
+
+    if (fetchParams.trafficRates.length > 0) {
+      restParams.rateGrpc = 'none';
+      restParams.rateHttp = 'none';
+      restParams.rateTcp = 'none';
+
+      fetchParams.trafficRates.forEach(trafficRate => {
+        switch (trafficRate) {
+          case TrafficRate.GRPC_RECEIVED:
+            restParams.rateGrpc = 'received';
+            break;
+          case TrafficRate.GRPC_REQUEST:
+            restParams.rateGrpc = 'requests';
+            break;
+          case TrafficRate.GRPC_SENT:
+            restParams.rateGrpc = 'sent';
+            break;
+          case TrafficRate.GRPC_TOTAL:
+            restParams.rateGrpc = 'total';
+            break;
+          case TrafficRate.HTTP_REQUEST:
+            restParams.rateHttp = 'requests';
+            break;
+          case TrafficRate.TCP_RECEIVED:
+            restParams.rateTcp = 'received';
+            break;
+          case TrafficRate.TCP_SENT:
+            restParams.rateTcp = 'sent';
+            break;
+          case TrafficRate.TCP_TOTAL:
+            restParams.rateTcp = 'total';
+            break;
+          default:
+            break;
+        }
+      });
+    }
 
     this._isLoading = true;
     this._isError = false;
@@ -380,7 +420,8 @@ export default class GraphDataSource {
       showIdleEdges: false,
       showIdleNodes: false,
       showOperationNodes: false,
-      showSecurity: false
+      showSecurity: false,
+      trafficRates: []
     };
   }
 
