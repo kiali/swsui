@@ -10,7 +10,8 @@ import {
   UNKNOWN,
   BoxByType,
   Protocol,
-  numLabels
+  numLabels,
+  TrafficRate
 } from '../../../types/Graph';
 import { icons } from '../../../config';
 import NodeImageTopology from '../../../assets/img/node-background-topology.png';
@@ -386,12 +387,16 @@ export class GraphStyles {
 
     const getEdgeColor = (ele: Cy.EdgeSingular): string => {
       const edgeData = decoratedEdgeData(ele);
+      const cyGlobal = getCyGlobalData(ele);
 
       if (!edgeData.hasTraffic) {
         return EdgeColorDead;
       }
       if (edgeData.protocol === 'tcp') {
         return EdgeColorTCPWithTraffic;
+      }
+      if (edgeData.protocol === 'grpc' && !cyGlobal.trafficRates.includes(TrafficRate.GRPC_REQUEST)) {
+        return EdgeColor;
       }
 
       const sourceNodeData = decoratedNodeData(ele.source());

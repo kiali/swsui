@@ -80,6 +80,15 @@ export enum TrafficRate {
   TCP_TOTAL = 'tcpTotal' // sent_bytes + received_bytes
 }
 
+export const DefaultTrafficRates: TrafficRate[] = [
+  TrafficRate.GRPC_GROUP,
+  TrafficRate.GRPC_REQUEST,
+  TrafficRate.HTTP_GROUP,
+  TrafficRate.HTTP_REQUEST,
+  TrafficRate.TCP_GROUP,
+  TrafficRate.TCP_SENT
+];
+
 export const isGrpcRate = (rate: TrafficRate): boolean => {
   return (
     rate === TrafficRate.GRPC_GROUP ||
@@ -90,8 +99,34 @@ export const isGrpcRate = (rate: TrafficRate): boolean => {
   );
 };
 
+export const toGrpcRate = (rate: string): TrafficRate | undefined => {
+  switch (rate) {
+    case 'received':
+      return TrafficRate.GRPC_RECEIVED;
+    case 'requests':
+    case 'request':
+      return TrafficRate.GRPC_REQUEST;
+    case 'sent':
+      return TrafficRate.GRPC_SENT;
+    case 'total':
+      return TrafficRate.GRPC_TOTAL;
+    default:
+      return undefined;
+  }
+};
+
 export const isHttpRate = (rate: TrafficRate): boolean => {
   return rate === TrafficRate.HTTP_GROUP || rate === TrafficRate.HTTP_REQUEST;
+};
+
+export const toHttpRate = (rate: string): TrafficRate | undefined => {
+  switch (rate) {
+    case 'requests':
+    case 'request':
+      return TrafficRate.HTTP_REQUEST;
+    default:
+      return undefined;
+  }
 };
 
 export const isTcpRate = (rate: TrafficRate): boolean => {
@@ -101,6 +136,19 @@ export const isTcpRate = (rate: TrafficRate): boolean => {
     rate === TrafficRate.TCP_SENT ||
     rate === TrafficRate.TCP_TOTAL
   );
+};
+
+export const toTcpRate = (rate: string): TrafficRate | undefined => {
+  switch (rate) {
+    case 'received':
+      return TrafficRate.TCP_RECEIVED;
+    case 'sent':
+      return TrafficRate.TCP_SENT;
+    case 'total':
+      return TrafficRate.TCP_TOTAL;
+    default:
+      return undefined;
+  }
 };
 
 export enum GraphType {
@@ -151,6 +199,7 @@ export type CytoscapeGlobalScratchData = {
   showMissingSidecars: boolean;
   showSecurity: boolean;
   showVirtualServices: boolean;
+  trafficRates: TrafficRate[];
 };
 
 export interface CytoscapeBaseEvent {

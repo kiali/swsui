@@ -175,8 +175,9 @@ class GraphSettings extends React.PureComponent<GraphSettingsProps, GraphSetting
               (s). Default: 95th Percentile.
             </div>
             <div>
-              The following edges do not offer a response time label but the information is available in the side panel
-              when selecting the edge:
+              Response times only apply to request-based traffic (not TCP or gRPC messaging). Additionally, the
+              following edges do not offer a response time label but the information is available in the side panel when
+              selecting the edge:
             </div>
             <div>- edges into service nodes</div>
             <div>- edges into or out of operation nodes.</div>
@@ -193,7 +194,10 @@ class GraphSettings extends React.PureComponent<GraphSettingsProps, GraphSetting
               Displays the requested HTTP Throughput. The unit is bytes-per-second (bps) when less than 1024, otherwise
               kilobytes-per-second (kps). Default: Request Throughput
             </div>
-            <div>The following edges do not offer a throughput label:</div>
+            <div>
+              Throughput applies only to request-based, HTTP traffic. Additionally, the following edges do not offer a
+              throughput label:
+            </div>
             <div>- edges into service nodes</div>
             <div>- edges into or out of operation nodes.</div>
           </div>
@@ -390,7 +394,7 @@ class GraphSettings extends React.PureComponent<GraphSettingsProps, GraphSetting
               Show closed or open lock icons on edges with traffic that differs from the global mTLS policy. The
               percentage of mTLS traffic can be seen in the side-panel when selecting the edge. Note that the global
               masthead will show a lock icon when global mTLS is enabled. The side-panel will also display source and
-              destination principals, if available.
+              destination principals, if available. mTLS status is not offered for gRPC-message traffic.
             </div>
           </div>
         )
