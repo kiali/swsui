@@ -117,11 +117,11 @@ class GraphTraffic extends React.PureComponent<GraphTrafficProps, GraphTrafficSt
     const grpcOptions: TrafficRateOptionType[] = [
       {
         id: TrafficRate.GRPC_RECEIVED,
-        labelText: 'Response Messages',
+        labelText: 'Received Messages',
         isChecked: trafficRates.includes(TrafficRate.GRPC_RECEIVED),
         tooltip: (
           <div style={{ textAlign: 'left' }}>
-            Response message rate in messages-per-second (mps). Captures server streaming RPCs.
+            Received (i.e. Response) message rate in messages-per-second (mps). Captures server streaming RPCs.
           </div>
         )
       },
@@ -137,11 +137,11 @@ class GraphTraffic extends React.PureComponent<GraphTrafficProps, GraphTrafficSt
       },
       {
         id: TrafficRate.GRPC_SENT,
-        labelText: 'Request Messages',
+        labelText: 'Sent Messages',
         isChecked: trafficRates.includes(TrafficRate.GRPC_SENT),
         tooltip: (
           <div style={{ textAlign: 'left' }}>
-            Response message rate in messages-per-second (mps). Captures client streaming RPCs.
+            Sent (i.e. Request) message rate in messages-per-second (mps). Captures client streaming RPCs.
           </div>
         )
       },
@@ -151,7 +151,7 @@ class GraphTraffic extends React.PureComponent<GraphTrafficProps, GraphTrafficSt
         isChecked: trafficRates.includes(TrafficRate.GRPC_TOTAL),
         tooltip: (
           <div style={{ textAlign: 'left' }}>
-            Combined (Request + Reponse) message rate in messages-per-second (mps). Captures all streaming RPCs.
+            Combined (Sent + Received) message rate in messages-per-second (mps). Captures all streaming RPCs.
           </div>
         )
       }
