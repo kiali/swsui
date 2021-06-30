@@ -222,8 +222,8 @@ export default class GraphDataSource {
           appenders += ',throughput';
           restParams.throughputType = 'response';
           break;
-        case EdgeLabelMode.REQUEST_DISTRIBUTION:
-        case EdgeLabelMode.REQUEST_RATE:
+        case EdgeLabelMode.TRAFFIC_DISTRIBUTION:
+        case EdgeLabelMode.TRAFFIC_RATE:
         default:
           break;
       }
@@ -326,12 +326,12 @@ export default class GraphDataSource {
   public fetchForVersionedAppParams = (duration: DurationInSeconds, namespace: string, app: string): FetchParams => {
     const params = GraphDataSource.defaultFetchParams(duration, namespace);
     params.edgeLabels = [
-      EdgeLabelMode.REQUEST_RATE,
-      EdgeLabelMode.REQUEST_DISTRIBUTION,
       EdgeLabelMode.RESPONSE_TIME_GROUP,
       EdgeLabelMode.RESPONSE_TIME_P95,
       EdgeLabelMode.THROUGHPUT_GROUP,
-      EdgeLabelMode.THROUGHPUT_REQUEST
+      EdgeLabelMode.THROUGHPUT_REQUEST,
+      EdgeLabelMode.TRAFFIC_DISTRIBUTION,
+      EdgeLabelMode.TRAFFIC_RATE
     ];
     params.graphType = GraphType.VERSIONED_APP;
     params.node!.nodeType = NodeType.APP;
@@ -348,12 +348,12 @@ export default class GraphDataSource {
   public fetchForWorkloadParams = (duration: DurationInSeconds, namespace: string, workload: string): FetchParams => {
     const params = GraphDataSource.defaultFetchParams(duration, namespace);
     params.edgeLabels = [
-      EdgeLabelMode.REQUEST_RATE,
-      EdgeLabelMode.REQUEST_DISTRIBUTION,
       EdgeLabelMode.RESPONSE_TIME_GROUP,
       EdgeLabelMode.RESPONSE_TIME_P95,
       EdgeLabelMode.THROUGHPUT_GROUP,
-      EdgeLabelMode.THROUGHPUT_REQUEST
+      EdgeLabelMode.THROUGHPUT_REQUEST,
+      EdgeLabelMode.TRAFFIC_DISTRIBUTION,
+      EdgeLabelMode.TRAFFIC_RATE
     ];
     params.graphType = GraphType.WORKLOAD;
     params.node!.nodeType = NodeType.WORKLOAD;
@@ -370,12 +370,12 @@ export default class GraphDataSource {
   public fetchForServiceParams = (duration: DurationInSeconds, namespace: string, service: string): FetchParams => {
     const params = GraphDataSource.defaultFetchParams(duration, namespace);
     params.edgeLabels = [
-      EdgeLabelMode.REQUEST_RATE,
-      EdgeLabelMode.REQUEST_DISTRIBUTION,
       EdgeLabelMode.RESPONSE_TIME_GROUP,
       EdgeLabelMode.RESPONSE_TIME_P95,
       EdgeLabelMode.THROUGHPUT_GROUP,
-      EdgeLabelMode.THROUGHPUT_REQUEST
+      EdgeLabelMode.THROUGHPUT_REQUEST,
+      EdgeLabelMode.TRAFFIC_DISTRIBUTION,
+      EdgeLabelMode.TRAFFIC_RATE
     ];
     params.graphType = GraphType.WORKLOAD;
     params.node!.nodeType = NodeType.SERVICE;

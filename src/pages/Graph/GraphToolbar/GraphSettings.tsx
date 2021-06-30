@@ -153,18 +153,6 @@ class GraphSettings extends React.PureComponent<GraphSettingsProps, GraphSetting
 
     const edgeLabelOptions: DisplayOptionType[] = [
       {
-        id: EdgeLabelMode.REQUEST_RATE,
-        labelText: _.startCase(EdgeLabelMode.REQUEST_RATE),
-        isChecked: edgeLabels.includes(EdgeLabelMode.REQUEST_RATE),
-        tooltip: (
-          <div style={{ textAlign: 'left' }}>
-            HTTP and gRPC rates are in requests-per-second (rps). When non-zero, the percentage of error responses is
-            shown below the rate. TCP rates are sent-bytes. The unit is bytes-per-second (bps) when less than 1024,
-            otherwise kilobytes-per-second (kps). Rates are rounded to 2 significant digits.
-          </div>
-        )
-      },
-      {
         id: EdgeLabelMode.RESPONSE_TIME_GROUP,
         labelText: _.startCase(EdgeLabelMode.RESPONSE_TIME_GROUP),
         isChecked: edgeLabels.includes(EdgeLabelMode.RESPONSE_TIME_GROUP),
@@ -204,14 +192,27 @@ class GraphSettings extends React.PureComponent<GraphSettingsProps, GraphSetting
         )
       },
       {
-        id: EdgeLabelMode.REQUEST_DISTRIBUTION,
-        labelText: _.startCase(EdgeLabelMode.REQUEST_DISTRIBUTION),
-        isChecked: edgeLabels.includes(EdgeLabelMode.REQUEST_DISTRIBUTION),
+        id: EdgeLabelMode.TRAFFIC_DISTRIBUTION,
+        labelText: _.startCase(EdgeLabelMode.TRAFFIC_DISTRIBUTION),
+        isChecked: edgeLabels.includes(EdgeLabelMode.TRAFFIC_DISTRIBUTION),
         tooltip: (
           <div style={{ textAlign: 'left' }}>
-            HTTP and gRPC Edges display the percentage of outbound requests for that edge, when less than 100%. For a
-            source node, the sum for outbound edges (per protocol) should be equal to or near 100%, given rounding. TCP
-            edges are not included in the distribution because their rates reflect bytes sent, not requests sent.
+            HTTP and gRPC Edges display the percentage of traffic for that edge, when less than 100%. For a source node,
+            the sum for outbound edges (per protocol) should be equal to or near 100%, given rounding. TCP edges are not
+            included in the distribution because their rates reflect bytes.
+          </div>
+        )
+      },
+      {
+        id: EdgeLabelMode.TRAFFIC_RATE,
+        labelText: _.startCase(EdgeLabelMode.TRAFFIC_RATE),
+        isChecked: edgeLabels.includes(EdgeLabelMode.TRAFFIC_RATE),
+        tooltip: (
+          <div style={{ textAlign: 'left' }}>
+            HTTP rates are in requests-per-second (rps). gRPC rates may be in requests-per-second (rps) or
+            messages-per-second (mps). For request rates, the percentage of error responses is shown below the rate,
+            when non-zero. TCP rates are in bytes. The unit is bytes-per-second (bps) when less than 1024, otherwise
+            kilobytes-per-second (kps). Rates are rounded to 2 significant digits.
           </div>
         )
       }

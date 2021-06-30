@@ -32,8 +32,6 @@ export interface SummaryPanelPropType {
 }
 
 export enum EdgeLabelMode {
-  REQUEST_DISTRIBUTION = 'requestDistribution',
-  REQUEST_RATE = 'requestRate',
   RESPONSE_TIME_GROUP = 'responseTime',
   RESPONSE_TIME_AVERAGE = 'avg',
   RESPONSE_TIME_P50 = 'rt50',
@@ -41,7 +39,9 @@ export enum EdgeLabelMode {
   RESPONSE_TIME_P99 = 'rt99',
   THROUGHPUT_GROUP = 'throughput',
   THROUGHPUT_REQUEST = 'throughputRequest',
-  THROUGHPUT_RESPONSE = 'throughputResponse'
+  THROUGHPUT_RESPONSE = 'throughputResponse',
+  TRAFFIC_DISTRIBUTION = 'trafficDistribution',
+  TRAFFIC_RATE = 'trafficRate'
 }
 
 export const isResponseTimeMode = (mode: EdgeLabelMode): boolean => {
