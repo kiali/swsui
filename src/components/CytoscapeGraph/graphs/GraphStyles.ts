@@ -55,6 +55,7 @@ let NodeColorFillHoverFailure: PFColorVal;
 const NodeHeight = '25px';
 const NodeIconCB = icons.istio.circuitBreaker.className; // bolt
 const NodeIconFaultInjection = icons.istio.faultInjection.className; // ban
+const NodeIconGateway = icons.istio.gateway.className; // globe
 const NodeIconMS = icons.istio.missingSidecar.className; // exclamation
 const NodeIconRoot = icons.istio.root.className; // alt-arrow-circle-right
 const NodeIconVS = icons.istio.virtualService.className; // code-branch
@@ -124,10 +125,19 @@ const contentWithBadges = style({
   borderLeft: '0'
 });
 
+const hostsClass = style({
+  color: PFColors.Black600,
+  fontFamily: NodeTextFont,
+  fontSize: '7px',
+  fontWeight: 'normal',
+  marginLeft: '2em',
+  marginTop: '0.5em'
+});
+
 const labelDefault = style({
   borderRadius: '3px',
   boxShadow: '0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 2px 8px 0 rgba(0, 0, 0, 0.19)',
-  display: 'flex',
+  display: 'inline-flex',
   fontFamily: NodeTextFont,
   fontSize: '0',
   fontWeight: 'normal',
@@ -241,7 +251,10 @@ export class GraphStyles {
       }
     }
     if (node.isRoot) {
-      icons = `<span class="${NodeIconRoot} ${iconMargin(icons)}"></span> ${icons}`;
+      if (node.isGateway?.ingressInfo?.hostnames?.length !== undefined) {
+        icons = `<span class='${NodeIconGateway} ${iconMargin(icons)}'></span> ${icons}`;
+      }
+      icons = `<span class='${NodeIconRoot} ${iconMargin(icons)}'></span> ${icons}`;
     }
 
     const hasIcon = icons.length > 0;
@@ -360,8 +373,18 @@ export class GraphStyles {
       return `<div class="${labelDefault} ${labelBox}" style="${labelStyle}">${icons}${contentSpan}</div>`;
     }
 
+    let hosts: string[] = [];
+    node.hasVS?.hostnames?.forEach(h => hosts.push(h === '*' ? '(All hosts)' : h));
+    node.isGateway?.ingressInfo?.hostnames?.forEach(h => hosts.push(h === '*' ? '(All hosts)' : h));
+
     const contentSpan = `<div class="${contentClasses}" style="${contentStyle}">${contentText}</div>`;
-    return `<div class="${labelDefault}" style="${labelStyle}">${icons}${contentSpan}</div>`;
+    let htmlLabel = `<div class="${labelDefault}" style="${labelStyle}">${icons}${contentSpan}</div>`;
+
+    if (hosts.length !== 0) {
+      htmlLabel += `<div class="${hostsClass}">${hosts.join("<br/>")}</div>`;
+    }
+
+    return htmlLabel;
   }
 
   static htmlNodeLabels(cy: Cy.Core) {
